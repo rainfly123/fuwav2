@@ -64,7 +64,7 @@ def activitiymsg(userid):
     title = u"重大活动公告"
     url = "http://m.66boss.com"
     sql = u"insert into message (touser, type, nick, snap, title, url, state) values\
-('%s', 1, '%s', '%s', '%s', '%s', 0)" %(userid, u'老板六六', 'http://ogcp293hg.bkt.clouddn.com/emopic/0330b6ffe129a0ab4a304e125bd54a00.jpg', title, url)
+('%s', 1, '%s', '%s', '%s', '%s', 0)" %(userid, u'嗨萌', 'http://wsimcdn.hmg66.com/hm_logo.png', title, url)
     cur.execute(sql)
     con.commit()
 
@@ -85,7 +85,7 @@ def activitiymsg(userid):
 | state   | int(11)          | YES  |     | NULL    |                |
 """
 if __name__ ==  '__main__':
-    for x in range(100000000, 100000200):
+    for x in range(100000070, 100000080):
         generalmsg(str(x))
         activitiymsg(str(x))
 
