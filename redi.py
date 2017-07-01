@@ -331,13 +331,13 @@ def CaptureFuwa(pic, user, gid):
 def Capturev2Fuwa(user, gid):
     ###limit captues number
 
-    limit = r.hincrby(user+"_lmt", "total", amount=1)
-    if limit  >= 10:
+    limit = r.hget(user+"_lmt", "total")
+    if limit != None and int(limit) >= 10:
         return False
 
     creator = r.hget(gid, "creator")
-    limit = r.hincrby(user+"_lmt", creator, amount=1)
-    if limit  >= 3:
+    limit = r.hget(user+"_lmt", creator)
+    if limit != None and int(limit) >= 3:
         return False
 
     val = 0
@@ -347,17 +347,24 @@ def Capturev2Fuwa(user, gid):
     else:
         val = r.zrem("fuwa_i", gid)
         r.zrem("fuwa_i_"+creator, gid)
-    if val == 1 :
-        r.hset(gid, "owner", user)
-        r.sadd(user + "_pack", gid)
-        filemd5, classid = r.hmget(gid, "filemd5", "classid")
-        if filemd5 != None:
-            usedby = r.hincrby(filemd5, "usedby", amount=-1)
-            if usedby <= 0:
-                r.zrem("video_g_" + classid, filemd5)
-                r.zrem("video_" + classid, filemd5)
-        return True
-    return False
+
+    if val == 0 :
+        return False
+
+    r.hset(gid, "owner", user)
+    r.sadd(user + "_pack", gid)
+
+    filemd5, classid = r.hmget(gid, "filemd5", "classid")
+    if filemd5 != None:
+        usedby = r.hincrby(filemd5, "usedby", amount=-1)
+        if usedby <= 0:
+            r.zrem("video_g_" + classid, filemd5)
+            r.zrem("video_" + classid, filemd5)
+
+    r.hincrby(user+"_lmt", "total", amount=1)
+    r.hincrby(user+"_lmt", creator, amount=1)
+
+    return True
 
 def QueryMy(user):
     outs = list()
