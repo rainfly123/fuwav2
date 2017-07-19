@@ -131,10 +131,11 @@ class Hidev2Handler(tornado.web.RequestHandler):
             return
         
         longtitude, latitude = geo[0], geo[1] 
-        redi.HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, int(number), purpose, videogeo, filemd5, \
+        users = redi.HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, int(number), purpose, videogeo, filemd5, \
                         classid)
         resp['code'] =  0
         resp['message'] = "Ok" 
+        resp['data'] =  users
         self.write(json.dumps(resp))
 
     def post(self):
