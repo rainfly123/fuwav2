@@ -306,18 +306,23 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
         r.zadd("video_" + classid, filemd5, 0)
 
     users = list()
+    unique = list()
     if purpose == "1":
         fuwasfu = r.georadius("fuwa_c", longtitude, latitude, 5, unit="km")
         for x in fuwasfu:
-            name, avatar, gender, signature, location = r.hmget(fuwaid, "name", "avatar", "gender", "signature", "location")
-            user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
-            users.append(user)
+            name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
+            if unique.count(creator) == 0 :
+                user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
+                users.append(user)
+                unique.append(creator)
     else:
         fuwasfu = r.georadius("fuwa_i", longtitude, latitude, 5, unit="km")
         for x in fuwasfu:
-            name, avatar, gender, signature, location = r.hmget(fuwaid, "name", "avatar", "gender", "signature", "location")
-            user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
-            users.append(user)
+            name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
+            if unique.count(creator) == 0 :
+                user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
+                users.append(user)
+                unique.append(creator)
     return users
 
 def CaptureFuwa(pic, user, gid):
