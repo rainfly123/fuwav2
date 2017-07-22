@@ -255,7 +255,27 @@ def QueryStrFuwav3(longtitude, latitude, radius, biggest, creator):
 
 BASE = "https://api.66boss.com/ucenter/userinfo/info?user_id="
 def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, purpose,\
-               videogeo, filemd5, classid):
+               videogeo, filemd5, classid, redevlptype, amount):
+
+    redevlp = list() 
+    amount = float(amount)
+    if redevlptype == "2":
+        redevlp = [0.01 for x in xrange(number)]
+        remain = amount - 0.01 * number
+        for x in xrange(number):
+            if remain >= 0:
+                howmuch = int(random.uniform(0, remain)  * 100)/100.0
+                remain -= howmuch
+                redevlp[x] += howmuch
+        if remain >=0:
+            redevlp[0] += remain
+       
+
+    elif redevlptype == "1":
+        tempr = amount/number
+        redevlp = [tempr for x in xrange(number)]
+    else:
+        redevlp = [ 0 for x in xrange(number)]
 
     results = r.smembers(owner + "_apply")
     shufflefuwas = list(results)
@@ -276,7 +296,7 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
                 vdic = {"name":name, "avatar":avatar, "gender":gender, "userid":owner, "video":video}
                 r.hmset(filemd5, vdic) 
             dic = {"pos": pos, "pic": pic, "detail": detail, "video": video, "htime": nows, "filemd5": filemd5, \
-                  "classid": classid}
+                  "classid": classid, "redevlp":redevlp[number - 1]}
             r.hmset(fuwagid, dic) 
             r.srem(owner + "_apply", fuwagid)
             number -= 1
@@ -295,7 +315,7 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
                 vdic = {"name":name, "avatar":avatar, "gender":gender, "userid":owner, "video":video}
                 r.hmset(filemd5, vdic) 
             dic = {"pos": pos, "pic": pic, "detail": detail, "video": video, "htime": nows, "filemd5": filemd5, \
-                  "classid": classid}
+                  "classid": classid, "redevlp":redevlp[number - 1]}
             r.hmset(fuwagid, dic) 
             r.srem(owner + "_apply", fuwagid)
             number -= 1
@@ -304,6 +324,12 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
     if len(filemd5) > 5:
         r.hincrby(filemd5, "usedby", amount=nnumber)
         r.zadd("video_" + classid, filemd5, 0)
+
+
+    params = {"owner": owner, "amount":amount}
+    url = url_concat("http://127.0.0.1:7777/submoney?", params)
+    http_client = AsyncHTTPClient()
+    non = http_client.fetch(url, callback=None)
 
     users = list()
     unique = list()
