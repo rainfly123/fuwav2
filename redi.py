@@ -338,7 +338,7 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
         for x in fuwasfu:
             name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
             if unique.count(creator) == 0 :
-                user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
+                user = {"creator":creator, "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
                 users.append(user)
                 unique.append(creator)
     else:
@@ -346,7 +346,7 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
         for x in fuwasfu:
             name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
             if unique.count(creator) == 0 :
-                user = {"name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
+                user = {"creator":creator, "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
                 users.append(user)
                 unique.append(creator)
     return users
