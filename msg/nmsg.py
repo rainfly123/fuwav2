@@ -58,6 +58,36 @@ class NoticeHandler(tornado.web.RequestHandler):
         r.sadd(buyer + "_pack", gid)
         self.write(cjson.encode(data))
 
+class topupHandler(tornado.web.RequestHandler):
+    def get(self):
+        sign = hashlib.md5()
+        userid = self.get_argument("userid", strip=True)
+        amount = self.get_argument("amount", strip=True)
+        signin = self.get_argument("sign", strip=True)
+
+        where = self.request.uri.find("&sign=") 
+        src = self.request.uri[:where] + "&platform=boss66"
+        sign.update(src)
+        signout = sign.hexdigest()
+        if signin != signout:
+            print signout, signin
+            resp = dict()
+            resp['code'] =  2
+            resp['message'] = "Sign Error" 
+            self.write(cjson.encode(resp))
+            return
+
+        data = mysql.Topup(userid, amount)
+        self.write(cjson.encode(data))
+
+class submoneyHandler(tornado.web.RequestHandler):
+    def get(self):
+        userid = self.get_argument("userid", strip=True)
+        amount = self.get_argument("amount", strip=True)
+
+        data = mysql.YuheSub(userid, amount)
+        self.write(cjson.encode(data))
+
 class sellHandler(tornado.web.RequestHandler):
     def get(self):
         sign = hashlib.md5()
@@ -226,6 +256,8 @@ application = tornado.web.Application([
     (r"/querymysell", QuerymysellHandler),
     (r"/cancelsell", CancelsellHandler),
     (r"/notice", NoticeHandler),
+    (r"/topup", topupHandler),
+    (r"/submoney", submoneyHandler),
     (r"/sell", sellHandler),
     (r"/myinfo", msgHandler),
     (r"/apply", applyHandler),

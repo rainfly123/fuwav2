@@ -117,6 +117,22 @@ def Done(orderid, buyer):
     result['data'] =  ""
     return result
 
+def Topup(userid, amount):
+    con = getConn()
+    cur =  con.cursor()
+
+    sql = "update money set amount = amount + %s where userid='%s'" %(userid)
+    cur.execute(sql)
+    con.commit()
+    cur.close()
+    con.close()
+
+    result = dict()
+    result['code'] =  0
+    result['message'] =  ERROR[0]
+    result['data'] =  ""
+    return result
+
 @gen.engine
 def sellAferCreateMsg(orderid, buyer):
     """
