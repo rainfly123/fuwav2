@@ -56,10 +56,12 @@ msg :"红包已存入你个人余额"/"红包已被领完了"
 
 # 2 藏视频 
 
-POST http://fuwa.hmg66.com/api/hidev2?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22
+POST http://fuwa.hmg66.com/api/hidev2?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
 owner福娃所有者
 pos 福娃位置　比如广州珠江纺织城Ａ区
 geohash 经纬度
+redevpnum 红包数量
+redevptotal 红包总金额
 视频采用POST name=video
 
 ```
