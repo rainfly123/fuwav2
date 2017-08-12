@@ -326,7 +326,7 @@ def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, pu
         r.zadd("video_" + classid, filemd5, 0)
 
 
-    params = {"owner": owner, "amount":amount}
+    params = {"userid": owner, "amount":amount}
     url = url_concat("http://127.0.0.1:7777/submoney?", params)
     http_client = AsyncHTTPClient()
     non = http_client.fetch(url, callback=None)

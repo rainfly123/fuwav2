@@ -51,7 +51,7 @@ def gene(recv, creator, info, total, shop):
         r.sadd(recv + "_pack", key)
 
 creator  = "100000153"
-receiver = ["100000075", "100001038", "100001284", "100001285", "100001287", "100001389", "100001397", "100001433"]
+receiver = ["100001528"]
 
 info = getName(creator)
 
