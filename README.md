@@ -80,162 +80,8 @@ location: "广东 广州市"
 }
 }
 ```
-# 1.1 查询周围的缘分
-http://fuwa.hmg66.com/api/querystrangerv2?geohash=102.2301-33.2827&radius=10000&biggest=x
-经度－纬度
-查询自己周围radius半径远的福娃，单位m
-第一次调用biggest = 0
-后续调用　取返回near中福娃gid 最后一个数值，比如fuwa_i_2323 则biggest=2323 依次类推
-
-```
-message: "OK",
-code: 0,
-data: {
-"far":[ {
-geo: "113.300937-23.085474",
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "世界纺织博览中心B坐",
-video: "",
-hider: "100000354",
-number: 64,  此处福娃数量
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-}
-{
-geo: "113.320937-23.185474",
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "世界纺织博览中心A坐",
-video: "",
-hider: "100000354",
-number: 22,  此处福娃数量
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-}
-
-]
-"near":[{
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "珠江国际纺织城",
-video: "",
-hider: "100000354",
-geo: "113.300937-23.085474",
-id: "6",
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-gid: "fuwa_i_2353", ##2353 递减分页每页最多１００个，请求提交最大值，服务器返回数据都比提交的最大值小
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-},
-
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "珠江国际纺织城",
-video: "",
-hider: "100000354",
-geo: "113.300937-23.085474",
-id: "64",
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-gid: "fuwa_i_2349", 
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-},
-
-]
-}
-}
-```
-
-# 2.1 查询自己抓到的福娃
-http://fuwa.hmg66.com/api/querymy?user=100000076
-
-```
-"message": "Ok",
-"code": 0,
-"data": [
-{
-   "gid": "fuwa_c_107",
-   "id": "11"
-   "awarded": false,  #还没有兑奖
-   "pos": "广州大酒店",       #位置
-   "creator": "雨飞的"
-   "creatorid": "100000076"
-},
-{
-   gid: "fuwa_i_119",
-   id: "14"
-   awarded: false,  #还没有兑奖
-   pos: "广州大酒店",       #位置
-   creator: "雨飞的"
-   "creatorid": "100000076"
-},
-```
-# 2.2 查询自己申请的福娃
-http://fuwa.hmg66.com/api/querymyapply?user=100000076
-
-```
-"message": "Ok",
-"code": 0,
-"data": [
-{
-   "gid": "fuwa_c_107",
-   "id": "11"
-   "creator": "雨飞的"
-},
-{
-   gid: "fuwa_i_119",
-   id: "14"
-   creator: "雨飞的"
-},
-```
-
-# 3 抓福娃　不再使用
-POST http://fuwa.hmg66.com/api/capture?user=xxx&gid=xx&sign=xx
-gid 是福娃全局ＩＤ
-照片ＰＯＳＴ　在body里面name=file
-
-# 3.1 抓福娃
-GET http://fuwa.hmg66.com/api/capturev2?user=xxx&gid=xx&sign=xx
-gid 是福娃全局ＩＤ
-sign 是签名
-user=是userid
-
-```
-返回结果可能为以下其一：ａｐｐ 要能显示给用户
-{
- code: 0
- message: "OK"
-}
-{
- code: 1
- message: "Parameter Error"
-}
-{
- code: 2
- message: "Sign Error"
-}
-{
- code: 3
- message: "明天再来吧"
-}
-```
-
 # 5 藏福娃 
+
 POST http://fuwa.hmg66.com/api/hidev2?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&validtime=1/2/3/4&number=xxx&type=1/0&class=1
 owner福娃所有者
 pos 福娃位置　比如广州珠江纺织城Ａ区
@@ -257,20 +103,7 @@ class 分类，美食、女装，男装，鞋帽，娱乐，用１，２，３�
     </form>
 ```
 
-# 7 福娃详情
-http://fuwa.hmg66.com/api/querydetail?fuwagid=fuwa_i_110
-###当用户停留在背包-福娃详情页面时，需要定时3秒请求接口，刷新
-```
-{
-message: "Ok",
-code: 0,
-data: {
-awarded: false,  #还没有兑奖
-pos: "广州大酒店",       #位置
-creator: "雨飞的"
-}
-}
-```
+
 # 7.1 福娃活动介绍
 http://fuwa.hmg66.com/api/huodong?fuwagid=fuwa_i_110
 ```
@@ -281,22 +114,6 @@ data: "抢到本次福娃用户，本店消费全场八折"
 }
 ```
 
-# 8 查询出售 
-http://fuwa.hmg66.com/msg/querysell
-
-# 8.1 查询我的出售 
-http://fuwa.hmg66.com/msg/querymysell?userid=xx
-
-# 9 出售福娃
-http://fuwa.hmg66.com/msg/sell?id=xx&owner=xx&amount=x&fuwagid=x&sign=x
-id是福娃编号
-amount 是售价
-fuwagid 是福娃全局标识
-sign 签名
-sign=md5(/sell?id=xx&owner=xx&amount=x&fuwagid=x&platform=boss66)
-
-# 10 支付系统通知购买成功 
-http://fuwa.hmg66.com/msg/notice?orderid=xx&buyer=x&fuwagid=x
 
 # 11 查询我的消息　
 http://fuwa.hmg66.com/msg/myinfo?userid=
@@ -327,41 +144,6 @@ http://fuwa.hmg66.com/msg/myinfo?userid=
      ]
 }
 ```
-
-# 12 赠送福娃
-http://fuwa.hmg66.com/api/donate?token=xx&fuwagid=xx&fromuser=xx&sign=mmm
-token = base64(接收福娃用户的id)
-fuwagid 要赠送的福娃全局标识
-fromuser 赠送人的用户id
-sign  签名
-sign=md5(/donate?token=xx&fuwagid=xx&fromuser=xx&platform=boss66)
-
-# 13 申请福娃
-http://fuwa.hmg66.com/msg/apply?userid=&name=xxx&phone=zz&shop=1&purpose=店内活动&region=广州&number=100
-userid 用户ＩＤ
-name 联系人姓名或公司名
-phone 电话
-shop 1公司，０个人
-purpose 活动说明
-region 福娃使用区域
-number 申请福娃个数
-
-# 14 扫描福娃，发送奖品，
-http://fuwa.hmg66.com/api/award?userid=xx&fuwagid=xx
-userid 用户ＩＤ 一般是商家用户ＩＤ ，准确来说是福娃创建者id
-fuwagid 福娃ｉｄ
-
-```
-{
-    "message": "成功", "已兑奖", "你不是福娃所有人"
-    "code": 0,1,2  三种可能
-}
-```
-
-
-# 15 撤销我的出售
-http://fuwa.hmg66.com/msg/cancelsell?orderid=xx&fuwagid=xx&userid=xx
-
 
 # 16 提现申请
 http://fuwa.hmg66.com/msg/money?userid=xx&amount=xx&alipay=xx&name=小啊&sign=xx
@@ -420,114 +202,6 @@ geohash 是当前经纬度
     ]
 }
 ```
-# 20 查询特定商家的福娃 ,观看完视频　带我去寻宝接口
-http://fuwa.hmg66.com/api/queryv3?geohash=102.2301-33.2827&radius=50000&biggest=0&userid=xx
-geohash 经度－纬度
-查询商家radius半径远的福娃，单位m 此处应该是视频离你距离一倍，如果视频距离你500M 那么调用这个接口时，radius=1000
-第一次调用biggest = 0
-后续调用　取返回near中福娃gid 最后一个数值，比如fuwa_c_2323 则biggest=2323 依次类推
-
-```
-message: "OK",
-code: 0,
-data: {
-"far":[ {
-geo: "113.300937-23.085474",
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "世界纺织博览中心B坐",
-video: "",
-hider: "100000354",
-number: 64,  此处福娃数量
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-}
-{
-geo: "113.320937-23.185474",
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "世界纺织博览中心A坐",
-video: "",
-hider: "100000354",
-number: 22,  此处福娃数量
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-}
-
-]
-"near":[{
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "珠江国际纺织城",
-video: "",
-hider: "100000354",
-geo: "113.300937-23.085474",
-id: "6",
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-gid: "fuwa_i_2353", ##2353 递减分页每页最多１００个，请求提交最大值，服务器返回数据都比提交的最大值小
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-},
-
-pic: "http://wsim.66boss.com/fuwa/brciqydlwvmtnxz.jpg",
-pos: "珠江国际纺织城",
-video: "",
-hider: "100000354",
-geo: "113.300937-23.085474",
-id: "64",
-distance: 808.3202,
-name: "CHU",
-gender: "女",
-detail: "测试",
-gid: "fuwa_i_2349", 
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-},
-
-]
-}
-}
-```
-
-# 21 查询盟友视频入口则为http://fuwa.hmg66.com/api/querystrvideo?geohash=102.2301-33.2827
-同上 19
-区别在于没有分类
-
-# 22 查询特定用户的福娃 ,观看完视频　带我去寻宝接口
-http://fuwa.hmg66.com/api/querystrangerv3?geohash=102.2301-33.2827&radius=50000&biggest=0&userid=xx
-同20 一直
-geohash 经度－纬度
-查询特定用户radius半径远的福娃，单位m 此处应该是固定值，比如50000 50KM 一个城市的距离
-第一次调用biggest = 0
-后续调用　取返回near中福娃gid 最后一个数值，比如fuwa_i_2323 则biggest=2323 依次类推
-
-# 23 查询分类
-http://fuwa.hmg66.com/api/queryclass
-```
-{
-   code : 0
-   message: "OK",
-   data:[
-   {name:"美食", classid:"1"},
-   {name:"服饰", classid:"2"},
-   {name:"生活", classid:"3"},
-   {name:"服务", classid:"4"},
-   {name:"综合", classid:"5"},
-   ]
-}
-```
 
 # 关于签名 
 只对抓福娃ＵＲＬ　签名，其余不要求
@@ -544,61 +218,4 @@ md5(/capture?user=john&gid=fuwa_6&platform=boss66)
 第二种       fuwa:user:AEjOkadJMKaGK 
                         
 前边是福娃的二维码， 后面是福娃赠送接收用户口令二维码
-
-## 数据库：
-globalid  是全局ID，逐渐递增
-
-fuwa_i_xxxx 是找缘分福娃的全局标识,xxxx是数字，hash 类型
-"name":创建者昵称
-"creator" 创建者用户id
-"pos" 藏的地理位置信息，比如广州珠江
-"awarded" 是否已兑奖
-"owner" 当前所有人id
-"id" 福娃编号
-
-
-fuwa_c_xxxx 是寻宝福娃的全局标识,xxxx是数字，hash 类型
-"name":创建者昵称
-"creator" 创建者用户id
-"pos" 藏的地理位置信息，比如广州珠江
-"awarded" 是否已兑奖
-"owner" 当前所有人id
-"id" 福娃编号
-
-xxxxxx_pack 是用户捕获到的福娃列表,比如:100000076_pack ，集合类型
-xxxxxx_apply是用户申请的福娃列表,比如:100000076_apply ，集合类型
-
-
-fuwa_i 是缘分福娃GEO地理位置信息
-fuwa_i 是寻宝福娃GEO地理位置信息
-
-============个人笔记用，By Rain================
-video_g_1 美食
-video_g_2 女装 
-video_g_3 男装
-video_g_4 鞋帽
-video_g_5 玩乐
-寻宝视频地理位置坐标
-video_g_i 盟友视频地理位置坐标
-
-filemd5{
-name:
-gender:
-avatar:
-userid:
-video:
-width:1024
-height:768
-}
-有序集合
-　美食　video_1 filemd5 播放次数
-　服饰　video_2 filemd5  播放次数
-　生活　video_3 filemd5 播放次数
-　服务　video_4 filemd5 播放次数
-　综合　video_5 filemd5 播放次数
-
-盟友　　video_i filemd5 播放次数
-　
-推荐算法　前十名最热视频，优先返回，geodistance 求距离，
-然后再按距离运近推荐 georadius withdistance asc
 
