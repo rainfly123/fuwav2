@@ -13,10 +13,8 @@ import urllib
 import string
 import random
 import json
-import mysql
 import redi
 import hashlib
-import toplist
 import base64
 import time
 
@@ -220,7 +218,7 @@ class QuerymyfortopHandler(tornado.web.RequestHandler):
         resp['message'] = "Ok" 
         resp['data'] = data 
         self.write(json.dumps(resp))
-
+"""
 class QuerysellHandler(tornado.web.RequestHandler):
     def get(self):
         data = mysql.Query()
@@ -241,7 +239,7 @@ class sellHandler(tornado.web.RequestHandler):
         owner = self.get_argument("owner", strip=True)
         data = mysql.Create(fuwaid, fuwagid, amount, owner)
         self.write(json.dumps(data))
-
+"""
 
 class QuerydetailHandler(tornado.web.RequestHandler):
     def get(self):
@@ -341,7 +339,7 @@ class Capturev2Handler(tornado.web.RequestHandler):
         resp['message'] = "Ok" 
         resp['data'] = data 
         self.write(json.dumps(resp))
-
+"""
 class toplistHandler(tornado.web.RequestHandler):
     def get(self):
         resp = dict()
@@ -357,6 +355,7 @@ class toplistHandler(tornado.web.RequestHandler):
         resp['message'] = "Ok" 
         resp['data'] = data 
         self.write(json.dumps(resp))
+"""
 
 class donateHandler(tornado.web.RequestHandler):
     def get(self):
