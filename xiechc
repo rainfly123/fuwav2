@@ -1,21 +1,29 @@
-video_c
-video_i
-先不管地理位置坐标
 
-
-video_1 {
-filemd5:
-class:1/2/3/4
-name:
-gender:
-avatar:
-video:
-number:
-}
-videogid = 1 自加
-
-有序集合
-　美食　video_1 video_8  播放次数
-　女装　video_2 video_3  播放次数
-　男装　video_3 video_4  播放次数
+2 有序集合 待定
+　video_p GBMADEEADFFDEADDMMIEADDAD 播放次数
 　
+3 video_g 存视频位置信息
+:GBMADEEADFFDEADDMMIEADDAD:
+:GBMADEEADFFDEADDMMIEADDAD:
+
+4 哈希 GBMADEEADFFDEADDMMIEADDAD
+ 1) "avatar"
+ 2) "https://imgcdn.66boss.com/imagesu/avatar/20170511052220551289.jpg"
+ 3) "height"
+ 4) "544"
+ 5) "usedby"
+ 6) "16"
+ 7) "video"
+ 8) "http://wsim.66boss.com/fuwa/b4d73fe71e5b1687bd46e508295cd605.mp4"
+ 9) "userid"
+10) "100000264"
+11) "name"
+12) "\xe6\x96\xb9\xe5\xad\x90\xe7\x9e\xb3"
+13) "gender"
+14) "\xe7\x94\xb7"
+15) "width"
+16) "304"
+
+5 列表 存红包 GMDADFIEPQEMADFADFDFSDAF_Money
+   rpush GMDADFIEPQEMADFADFDFSDAF_Money  0.01
+   rpush GMDADFIEPQEMADFADFDFSDAF_Money  1.21
