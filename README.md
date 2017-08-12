@@ -21,6 +21,7 @@ uuid: "adfadfawwfadd"
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
+money: "true" 有红包
 },
 {
 pos: "珠江国际纺织城",
@@ -34,11 +35,25 @@ uuid: "bjfadkeab",
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
+money: "true"
 },
 
 ]
 }
 ```
+# 1.1 打开红包 
+
+http://fuwa.hmg66.com/api/openmoney?uuid=xxx
+```
+message: "OK",
+code: 0,
+data:{ 
+result: true/false
+msg :"红包已存入你个人余额"/"红包已被领完了"
+}
+```
+
+
 # 2 藏视频 
 
 POST http://fuwa.hmg66.com/api/hidev2?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22
@@ -153,6 +168,49 @@ geohash 是当前经纬度
     ]
 }
 ```
+
+#9 查询自己藏得宝贝
+
+http://fuwa.hmg66.com/api/querymy?userid=
+
+```
+message: "OK",
+code: 0,
+data: {
+[{
+pos: "珠江国际纺织城",
+video: "http://x.xx.cx/uuid.mp4",
+hider: "100000354",
+geo: "113.300937-23.085474",
+name: "CHU",
+gender: "女",
+detail: "测试",
+uuid: "adfadfawwfadd"
+avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
+signature: "",
+location: "广东 广州市"
+money: "true"
+},
+{
+pos: "珠江国际纺织城",
+video: "http://x.xx.cx/uuid.mp4",
+hider: "100000354",
+geo: "113.300937-23.085474",
+name: "CHU",
+gender: "女",
+detail: "测试",
+uuid: "bjfadkeab", 
+avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
+signature: "",
+money: "true"
+location: "广东 广州市"
+},
+
+]
+}
+
+```
+
 
 # 关于签名 
 只对抓福娃ＵＲＬ　签名，其余不要求
