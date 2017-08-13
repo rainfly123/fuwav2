@@ -11,7 +11,7 @@ from tornado.httpclient import AsyncHTTPClient
 from tornado.httputil import url_concat
 
 STORE_PATH="/www/html/fuwa/"
-pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=0, password="aaa11bbb22")  
+pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=1, password="aaa11bbb22")  
 r = redis.Redis(connection_pool=pool)  
 
 HOWFAR = 300
@@ -65,11 +65,11 @@ def Query(longtitude, latitude):
 BASE = "https://api.66boss.com/ucenter/userinfo/info?user_id="
 
 @gen.engine
-def getUserinfo(self, userid, uuid):
+def getUserinfo(userid, uuid):
     http_client = AsyncHTTPClient()
     http_client.fetch(BASE + userid, callback=on_response, user_agent=uuid)
 
-def on_response(self, response):
+def on_response(response):
     uuid = response.request.headers['User-Agent']
     data = json.loads(response.body)
     dic = {"name": data['user_name'], "avatar": data['avatar'], "gender": data['sex'],\
@@ -83,23 +83,25 @@ def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, 
     number = int(redevpnum)
 
     if amount > 0 and number > 0:
-        redevlp = [0.01 for x in xrange(number)]
-        remain = amount - 0.01 * number
+        amount = amount *100
+        redevlp = [1 for x in xrange(number)]
+        remain = amount - number
 
         for x in xrange(number):
             if remain >= 0:
-                howmuch = round(random.uniform(0, remain), 2)
+                howmuch = random.randint(0, remain)
                 redevlp[x] += howmuch
                 remain -= howmuch
         redevlp[0] += remain
+        redevlps = [ round(m/100.0, 2) for m in redevlp]
 
-        for x in redevlp:
+        for x in redevlps:
             r.sadd(uuid + "_Money", x)
 
-        params = {"userid": owner, "amount":amount}
-        url = url_concat("http://127.0.0.1:7777/submoney?", params)
-        http_client = AsyncHTTPClient()
-        non = http_client.fetch(url, callback=None)
+        #params = {"userid": owner, "amount":amount}
+        #url = url_concat("http://127.0.0.1:7777/submoney?", params)
+        #http_client = AsyncHTTPClient()
+        #non = http_client.fetch(url, callback=None)
        
     nows = str(int(time.time()))
 

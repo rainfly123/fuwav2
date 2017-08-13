@@ -73,7 +73,7 @@ class HideHandler(tornado.web.RequestHandler):
 
     def post(self):
         video = str()
-        uuid = uuid.uuid1().hex
+        uuids = uuid.uuid1().hex
 
         if self.request.files.has_key('video'):
             video_metas = self.request.files['video']   
@@ -84,13 +84,13 @@ class HideHandler(tornado.web.RequestHandler):
 
 
                 suffix = os.path.splitext(meta['filename'])[1]
-                filename = uuid + suffix
+                filename = uuids + suffix
                 filepath = os.path.join(STORE_PATH, filename)
 
                 os.rename(temppath, filepath)
                 video = ACCESS_PATH + filename
 
-        self.myget(video, uuid)
+        self.myget(video, uuids)
 
 
 class QuerymyapplyHandler(tornado.web.RequestHandler):
@@ -242,6 +242,6 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-    application.listen(55555)
+    application.listen(6777)
     tornado.ioloop.IOLoop.instance().start()
 
