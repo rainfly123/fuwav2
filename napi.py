@@ -212,6 +212,25 @@ class hitHandler(tornado.web.RequestHandler):
         resp['data'] = data
         self.write(json.dumps(resp))
 
+class OpenHandler(tornado.web.RequestHandler):
+    def get(self):
+        resp = dict()
+        user = self.get_argument("userid", strip=True)
+        uuid = self.get_argument("uuid", strip=True)
+        if len(user) < 2 or len(uuid) < 5:
+            resp['code'] =  1
+            resp['message'] = "Parameter Error" 
+            self.write(json.dumps(resp))
+            return
+        
+        data = redi.QueryMy(user)
+        resp['code'] =  0
+        resp['message'] = "Ok" 
+        resp['data'] = data 
+        self.write(json.dumps(resp))
+
+
+
 application = tornado.web.Application([
     (r"/query", QueryHandler),
     (r"/hide", HideHandler),
@@ -219,7 +238,7 @@ application = tornado.web.Application([
     (r"/queryvideo", queryvideoHandler),
     (r"/querymy", huodongHandler),
     (r"/openmoney", OpenHandler),
-    (r"/hit", HitHandler),
+    #(r"/hit", HitHandler),
 ])
 
 if __name__ == "__main__":

@@ -76,7 +76,7 @@ def on_response(self, response):
           "location":data['district_str'], "signature":data['signature']}
     r.hmset(uuid, dic) 
 
-def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, redevptotal)
+def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, redevptotal):
 
     redevlp = list() 
     amount = float(redevptotal)
@@ -92,16 +92,20 @@ def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, 
                 redevlp[x] += howmuch
                 remain -= howmuch
         redevlp[0] += remain
+
+        for x in redevlp:
+            r.sadd(uuid + "_Money", x)
+
+        params = {"userid": owner, "amount":amount}
+        url = url_concat("http://127.0.0.1:7777/submoney?", params)
+        http_client = AsyncHTTPClient()
+        non = http_client.fetch(url, callback=None)
        
     nows = str(int(time.time()))
 
     hasmoney = "0"
     if amount > 0:
         hasmoney = "1"
-        params = {"userid": owner, "amount":amount}
-        url = url_concat("http://127.0.0.1:7777/submoney?", params)
-        http_client = AsyncHTTPClient()
-        non = http_client.fetch(url, callback=None)
 
     dic = {"pos":pos, "detail":detail, "video":video, "htime":nows, "uuid":uuid, "hider":owner, "money":hasmoney}
     r.geoadd("video_g", longtitude, latitude, uuid)

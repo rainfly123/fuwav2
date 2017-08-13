@@ -129,7 +129,7 @@ http://fuwa.hmg66.com/msg/querymoney?userid=100000078
 userid 用户ID
 
 
-# 7 增加播放次数
+# 7 增加播放次数 (暂时不做）
 http://fuwa.hmg66.com/api/hit?uuid=adfefadfcafda&time=1496313547&sign=
 uuid 是视频文件ＭＤ５　校验值。
 如果是萌友视频class设置为i
