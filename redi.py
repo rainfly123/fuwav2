@@ -62,104 +62,53 @@ def Query(longtitude, latitude):
 
     return {"far":farfuwas, "near":nearfuwas}
 
-
 BASE = "https://api.66boss.com/ucenter/userinfo/info?user_id="
-def HideVideo(longtitude, latitude, pos, pic, owner, detail, video, number, purpose,\
-               videogeo, filemd5, classid, redevlptype, amount):
+
+@gen.engine
+def getUserinfo(self, userid, uuid):
+    http_client = AsyncHTTPClient()
+    http_client.fetch(BASE + userid, callback=on_response, user_agent=uuid)
+
+def on_response(self, response):
+    uuid = response.request.headers['User-Agent']
+    data = json.loads(response.body)
+    dic = {"name": data['user_name'], "avatar": data['avatar'], "gender": data['sex'],\
+          "location":data['district_str'], "signature":data['signature']}
+    r.hmset(uuid, dic) 
+
+def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, redevptotal)
 
     redevlp = list() 
-    amount = float(amount)
-    if redevlptype == "2":
+    amount = float(redevptotal)
+    number = int(redevpnum)
+
+    if amount > 0 and number > 0:
         redevlp = [0.01 for x in xrange(number)]
         remain = amount - 0.01 * number
+
         for x in xrange(number):
             if remain >= 0:
-                howmuch = int(random.uniform(0, remain)  * 100)/100.0
-                remain -= howmuch
+                howmuch = round(random.uniform(0, remain), 2)
                 redevlp[x] += howmuch
-        if remain >=0:
-            redevlp[0] += remain
+                remain -= howmuch
+        redevlp[0] += remain
        
-
-    elif redevlptype == "1":
-        tempr = amount/number
-        redevlp = [tempr for x in xrange(number)]
-    else:
-        redevlp = [ 0 for x in xrange(number)]
-
-    results = r.smembers(owner + "_apply")
-    shufflefuwas = list(results)
-    random.shuffle(shufflefuwas)
-
     nows = str(int(time.time()))
-    nnumber = number
-    if purpose == "1":
-        for which in xrange(len(results)):
-            fuwagid  = shufflefuwas[which]
-            if fuwagid.find('i') > 0:
-                continue
-            r.geoadd("fuwa_c", longtitude, latitude, fuwagid)
-            r.geoadd("fuwa_c_"+owner, longtitude, latitude, fuwagid)
-            name, avatar, gender = r.hmget(fuwagid, "name", "avatar", "gender")
-            if len(filemd5) > 5:
-                r.geoadd(videogeo, longtitude, latitude, filemd5)
-                vdic = {"name":name, "avatar":avatar, "gender":gender, "userid":owner, "video":video}
-                r.hmset(filemd5, vdic) 
-            dic = {"pos": pos, "pic": pic, "detail": detail, "video": video, "htime": nows, "filemd5": filemd5, \
-                  "classid": classid, "redevlp":redevlp[number - 1]}
-            r.hmset(fuwagid, dic) 
-            r.srem(owner + "_apply", fuwagid)
-            number -= 1
-            if number == 0 :
-                break
-    else:
-        for which in xrange(len(results)):
-            fuwagid  = shufflefuwas[which]
-            if fuwagid.find('c') > 0:
-                continue
-            r.geoadd("fuwa_i", longtitude, latitude, fuwagid)
-            r.geoadd("fuwa_i_"+owner, longtitude, latitude, fuwagid)
-            name, avatar, gender = r.hmget(fuwagid, "name", "avatar", "gender")
-            if len(filemd5) > 5:
-                r.geoadd(videogeo, longtitude, latitude, filemd5)
-                vdic = {"name":name, "avatar":avatar, "gender":gender, "userid":owner, "video":video}
-                r.hmset(filemd5, vdic) 
-            dic = {"pos": pos, "pic": pic, "detail": detail, "video": video, "htime": nows, "filemd5": filemd5, \
-                  "classid": classid, "redevlp":redevlp[number - 1]}
-            r.hmset(fuwagid, dic) 
-            r.srem(owner + "_apply", fuwagid)
-            number -= 1
-            if number == 0 :
-                break
-    if len(filemd5) > 5:
-        r.hincrby(filemd5, "usedby", amount=nnumber)
-        r.zadd("video_" + classid, filemd5, 0)
 
+    hasmoney = "0"
+    if amount > 0:
+        hasmoney = "1"
+        params = {"userid": owner, "amount":amount}
+        url = url_concat("http://127.0.0.1:7777/submoney?", params)
+        http_client = AsyncHTTPClient()
+        non = http_client.fetch(url, callback=None)
 
-    params = {"userid": owner, "amount":amount}
-    url = url_concat("http://127.0.0.1:7777/submoney?", params)
-    http_client = AsyncHTTPClient()
-    non = http_client.fetch(url, callback=None)
+    dic = {"pos":pos, "detail":detail, "video":video, "htime":nows, "uuid":uuid, "hider":owner, "money":hasmoney}
+    r.geoadd("video_g", longtitude, latitude, uuid)
+    r.hmset(uuid, dic)
+    getUserinfo(owner, uuid)
 
-    users = list()
-    unique = list()
-    if purpose == "1":
-        fuwasfu = r.georadius("fuwa_c", longtitude, latitude, 5, unit="km")
-        for x in fuwasfu:
-            name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
-            if unique.count(creator) == 0 :
-                user = {"creator":creator, "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
-                users.append(user)
-                unique.append(creator)
-    else:
-        fuwasfu = r.georadius("fuwa_i", longtitude, latitude, 5, unit="km")
-        for x in fuwasfu:
-            name, avatar, gender, signature, location, creator = r.hmget(x, "name", "avatar", "gender", "signature", "location", "creator")
-            if unique.count(creator) == 0 :
-                user = {"creator":creator, "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location}
-                users.append(user)
-                unique.append(creator)
-    return users
+    return  True
 
 def CaptureFuwa(pic, user, gid):
     import os

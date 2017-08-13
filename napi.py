@@ -58,17 +58,17 @@ class HideHandler(tornado.web.RequestHandler):
         redevptotal = self.get_argument("redevptotal", strip=True)
 
         geo = geohash.split('-')
-        if len(geo) != 2 or len(number) < 1:
+        if len(geo) != 2:
             resp['code'] =  1
             resp['message'] = "Parameter Error" 
             self.write(json.dumps(resp))
             return
         
         longtitude, latitude = geo[0], geo[1] 
-        users = redi.HideVideo(longtitude, latitude, pos, owner, detail, video, uuid, redevpnum, redevptotal)
+        result = redi.HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, redevptotal)
         resp['code'] =  0
         resp['message'] = "Ok" 
-        resp['data'] =  users
+        resp['data'] =  result
         self.write(json.dumps(resp))
 
     def post(self):
