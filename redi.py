@@ -15,17 +15,10 @@ pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=0, password="aaa11bb
 r = redis.Redis(connection_pool=pool)  
 
 HOWFAR = 300
-def QueryFuwaNew(longtitude, latitude, radius, biggest):
-    if biggest == "0":
-        biggest = 0x1fffffff
-    else:
-        biggest = int(biggest)
+radius = 3000
+def Query(longtitude, latitude):
 
-    fuwas = r.georadius("fuwa_c", longtitude, latitude, int(radius), unit="m", withdist=True)
-    near = [x for x in fuwas if x[1] <= HOWFAR and int(x[0][7:]) < biggest]
-    far = [x for x in fuwas if x[1] > HOWFAR]
-    near = sorted(near, key=lambda x: int(x[0][7:]), reverse=True)
-    near = near[:100]
+    videos = r.georadius("video_g", longtitude, latitude, radius, unit="m", withdist=True)
 
     nearfuwas = list()
     for fuwa in near:
@@ -71,7 +64,7 @@ def QueryFuwaNew(longtitude, latitude, radius, biggest):
 
 
 BASE = "https://api.66boss.com/ucenter/userinfo/info?user_id="
-def HideFuwaNew(longtitude, latitude, pos, pic, owner, detail, video, number, purpose,\
+def HideVideo(longtitude, latitude, pos, pic, owner, detail, video, number, purpose,\
                videogeo, filemd5, classid, redevlptype, amount):
 
     redevlp = list() 

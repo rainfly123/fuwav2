@@ -2,7 +2,7 @@
 # 用户看完视频就可以领取红包 ,(没有线索图片) , 藏视频 可以地图任意选点
 
 # 1 查询周围的宝贝
-http://fuwa.hmg66.com/api/queryv2?geohash=102.2301-33.2827
+http://fuwa.hmg66.com/api/query?geohash=102.2301-33.2827
 经度－纬度
 
 ```
@@ -56,7 +56,7 @@ msg :"红包已存入你个人余额"/"红包已被领完了"
 
 # 2 藏视频 
 
-POST http://fuwa.hmg66.com/api/hidev2?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
+POST http://fuwa.hmg66.com/api/hide?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
 owner福娃所有者
 pos 福娃位置　比如广州珠江纺织城Ａ区
 geohash 经纬度
