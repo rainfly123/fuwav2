@@ -14,12 +14,13 @@ class GenAsyncHandler(tornado.web.RequestHandler):
     @gen.engine
     def get(self):
         http_client = AsyncHTTPClient()
-        response = http_client.fetch(BASE, callback=self.on_response)
-        print (response)
-        self.finish()
+        http_client.fetch(BASE, callback=self.on_response, user_agent="uuid")
+
     def on_response(self,response):
-        print response.headers
-        print response.body
+        print response.request.headers['User-Agent']
+        data =  json.loads(response.body)
+        dic = {"name": data['user_name'], "avatar": data['avatar'], "gender": data['sex'],\
+               "location":data['district_str'], "signature":data['signature']}
 
 application = tornado.web.Application([
     (r"/app", GenAsyncHandler),
