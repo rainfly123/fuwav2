@@ -112,7 +112,7 @@ def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, 
     dic = {"pos":pos, "detail":detail, "video":video, "htime":nows, "uuid":uuid, "hider":owner, "money":hasmoney}
     r.hmset(uuid, dic)
     r.geoadd("video_g", longtitude, latitude, uuid)
-    r.sadd(owner+"_pack", uuid
+    r.sadd(owner+"_pack", uuid)
 
     getUserinfo(owner, uuid)
 
@@ -131,9 +131,7 @@ def QueryMy(user):
 
 def Huodong(gid):
     detail = r.hget(gid, "detail")
-    if detail != None:
-        pass
-    else:
+    if detail == None:
         detail = ""
     return detail
 
