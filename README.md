@@ -2,7 +2,7 @@
 # 用户看完视频就可以领取红包 ,(没有线索图片) , 藏视频 可以地图任意选点
 
 # 1 查询周围的宝贝
-http://fuwa.hmg66.com/api/query?geohash=102.2301-33.2827
+http://fuwav2.hmg66.com/api/query?geohash=102.2301-33.2827
 经度－纬度
 
 ```
@@ -43,7 +43,7 @@ money: "0" 无红包
 ```
 # 1.1 打开红包 
 
-http://fuwa.hmg66.com/api/openmoney?uuid=xxx
+http://fuwav2.hmg66.com/api/openmoney?uuid=xxx
 ```
 message: "OK",
 code: 0,
@@ -56,7 +56,7 @@ msg :"红包已存入你个人余额"/"红包已被领完了"
 
 # 2 藏视频 
 
-POST http://fuwa.hmg66.com/api/hide?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
+POST http://fuwav2.hmg66.com/api/hide?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
 owner福娃所有者
 pos 福娃位置　比如广州珠江纺织城Ａ区
 geohash 经纬度
@@ -75,7 +75,7 @@ redevptotal 红包总金额
 
 
 # 3 福娃活动介绍
-http://fuwa.hmg66.com/api/huodong?uuid=adfeadfdbbdfw
+http://fuwav2.hmg66.com/api/huodong?uuid=adfeadfdbbdfw
 ```
 uuid为视频uuid
 {
@@ -87,7 +87,7 @@ data: "抢到本次福娃用户，本店消费全场八折"
 
 
 # 4 查询我的消息　(没有更改)
-http://fuwa.hmg66.com/msg/myinfo?userid=
+http://fuwav2.hmg66.com/msg/myinfo?userid=
 ```
 {
     "message": "Ok",
@@ -118,6 +118,7 @@ http://fuwa.hmg66.com/msg/myinfo?userid=
 
 # 5 提现申请 (没有更改)
 http://fuwa.hmg66.com/msg/money?userid=xx&amount=xx&alipay=xx&name=小啊&sign=xx
+http://fuwav2.hmg66.com/msg/money?userid=xx&amount=xx&alipay=xx&name=小啊&sign=xx
 userid 用户ID
 amount 体现金额
 alipay 支付宝帐号
@@ -125,7 +126,9 @@ sign 签名
 md5(/money?userid=100000076&alipay=22233322x&amount=13&name=%E5%B0%8F%E5%95%8A&platform=boss66)
 
 # 6 查询可用余额 (没有更改) 
+http://fuwav2.hmg66.com/msg/querymoney?userid=100000078
 http://fuwa.hmg66.com/msg/querymoney?userid=100000078
+二个路径应该都可以
 userid 用户ID
 
 
@@ -137,7 +140,7 @@ time 是从1970年１月１日凌晨到目前的秒数
 sign 是签名
 
 
-# 8 查询视频入口则为http://fuwa.hmg66.com/api/queryvideo?geohash=102.2301-33.2827
+# 8 查询视频入口则为http://fuwav2.hmg66.com/api/queryvideo?geohash=102.2301-33.2827
 geohash 是当前经纬度
 
 ```
@@ -173,7 +176,7 @@ geohash 是当前经纬度
 
 #9 查询自己藏得宝贝
 
-http://fuwa.hmg66.com/api/querymy?userid=
+http://fuwav2.hmg66.com/api/querymy?userid=
 
 ```
 message: "OK",
