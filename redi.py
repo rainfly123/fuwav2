@@ -110,164 +110,24 @@ def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, 
         hasmoney = "1"
 
     dic = {"pos":pos, "detail":detail, "video":video, "htime":nows, "uuid":uuid, "hider":owner, "money":hasmoney}
-    r.geoadd("video_g", longtitude, latitude, uuid)
     r.hmset(uuid, dic)
+    r.geoadd("video_g", longtitude, latitude, uuid)
+    r.sadd(owner+"_pack", uuid
+
     getUserinfo(owner, uuid)
 
     return  True
 
-def CaptureFuwa(pic, user, gid):
-    import os
-    import imgcmp
-
-    filename = os.path.basename(pic)
-    fullpath = os.path.join(STORE_PATH, filename)
-    clue = r.hget(gid, "pic") 
-    filenamec = os.path.basename(clue)
-    fullpathc = os.path.join(STORE_PATH, filenamec)
-    ok = imgcmp.ImgCmp(fullpathc, fullpath)
-    if ok < 45:
-        return False
-
-    pipe = r.pipeline()
-    pipe.hset(gid, "owner", user)
-    pipe.sadd(user + "_pack", gid)
-    if gid.find('c') > 0:
-        pipe.zrem("fuwa_c", gid)
-    else:
-        pipe.zrem("fuwa_i", gid)
-    pipe.execute()
-    return True
-
-def Capturev2Fuwa(user, gid):
-    ###limit captues number
-
-    limit = r.hget(user+"_lmt", "total")
-    if limit != None and int(limit) >= 10:
-        return False
-
-    creator = r.hget(gid, "creator")
-    limit = r.hget(user+"_lmt", creator)
-    if limit != None and int(limit) >= 3:
-        return False
-
-    val = 0
-    if gid.find('c') > 0:
-        val = r.zrem("fuwa_c", gid)
-        r.zrem("fuwa_c_"+creator, gid)
-    else:
-        val = r.zrem("fuwa_i", gid)
-        r.zrem("fuwa_i_"+creator, gid)
-
-    if val == 0 :
-        return False
-
-    r.hset(gid, "owner", user)
-    r.sadd(user + "_pack", gid)
-
-    filemd5, classid = r.hmget(gid, "filemd5", "classid")
-    if filemd5 != None:
-        usedby = r.hincrby(filemd5, "usedby", amount=-1)
-        if usedby <= 0:
-            r.zrem("video_g_" + classid, filemd5)
-            r.zrem("video_" + classid, filemd5)
-
-    r.hincrby(user+"_lmt", "total", amount=1)
-    r.hincrby(user+"_lmt", creator, amount=1)
-
-    return True
-
 def QueryMy(user):
     outs = list()
-    
     results = r.smembers(user + "_pack")
-    for gid in results:
+    for uuid in results:
         out = dict()
-        creator, name, pos, awarded, idd = r.hmget(gid, "creator", "name", "pos", "awarded", "id")
-        out['creatorid'] = creator 
-        out['creator'] = name 
+        video, pos = r.hmget(uuid, "video", "pos")
+        out["video"] = video
         out['pos'] = pos
-        out["gid"] = gid
-        out["id"] = idd
-        if awarded is '0':
-            out['awarded'] = False
-        else:
-            out['awarded'] = True
         outs.append(out)
     return outs
-
-def QueryMyApply(user):
-    outs = list()
-
-    results = r.smembers(user + "_apply")
-    for gid in results:
-        creator, idd = r.hmget(gid, "name", "id")
-        out = {'creator':creator, "gid":gid, "id":idd}
-        outs.append(out)
-    return outs
-
-def QueryMyfortop(user):
-    outs = dict()
-    fuwas = list()
-    results = r.smembers(user + "_pack")
-    for gid in results:
-        idd = r.hget(gid, "id")
-        if outs.has_key(idd):
-            outs[idd] += 1
-        else:
-            outs[idd] = 1
-
-    for key in sorted(outs.keys(), key=lambda x:int(x)):
-        fuwa = dict()
-        fuwa['id'] = key
-        fuwa['number'] = outs[key]
-        fuwas.append(fuwa)
-
-    return fuwas
-
-def QueryDetail(gid):
-    outs = dict()
-
-    creator, pos, awarded = r.hmget(gid, "name", "pos", "awarded")
-
-    outs['creator'] = creator
-    outs['pos'] = pos
-    if awarded is '0':
-        outs['awarded'] = False
-    else:
-        outs['awarded'] = True
-    
-    return outs
-
-def Donate(touser, gid, fromuser):
-    if len(touser) != 9:
-        return 1
-    outs = dict()
-    i=r.srem(fromuser + "_pack", gid)
-    if i == 0:
-        return 1
-    r.sadd(touser + "_pack", gid)
-    r.hset(gid, "owner", touser)
-    params = {"owner": touser, "buyer":fromuser}
-    url = url_concat("http://127.0.0.1:2688/donatemsg?", params)
-    http_client = AsyncHTTPClient()
-    non = http_client.fetch(url, callback=None)
-    return 0
-
-MES1 = u"你不是福娃的生成者"
-MES2 = u"此福娃已兑奖"
-MES0 = u"成功"
-
-def Award(user, gid):
-    creator, awarded = r.hmget(gid, "creator", "awarded")
-    if creator != user:
-        return 1, MES1
-
-    if awarded is '1':
-        return 2, MES2
-
-    r.hset(gid, "awarded", "1")
-    return 0, MES0
 
 def Huodong(gid):
     detail = r.hget(gid, "detail")
@@ -276,12 +136,6 @@ def Huodong(gid):
     else:
         detail = ""
     return detail
-
-aclass =[{"name":"美食", "classid":"1"}, {"name":"服饰", "classid":"2"}, {"name":"生活", "classid":"3"},\
-        {"name":"服务", "classid":"4"}, {"name":"综合", "classid":"5"}]
-
-def Class():
-    return aclass
 
 def Hit(filemd5, classid):
     score = r.zscore("video_" + classid, filemd5)
@@ -343,83 +197,3 @@ def QueryVideo(classid, longtitude, latitude):
 
     return results
 
-def QueryStrVideo(longtitude, latitude):
-    location = (latitude, longtitude)
-    filemd5s = r.zrevrange("video_i", 0, 4)
-    #filemd5s = [x for x in filemd5s if x != None]
-    positions = r.geopos("video_g_i", *filemd5s)
-    distances = list()
-    for pos in positions:
-        dis = getdis.getdistance(location, (pos[1], pos[0]))
-        distances.append(dis)
-    results = list()
-    myresults = list()
-    which = 0
-    for filemd5 in filemd5s:
-        #this moment we can't see repeated
-        #if myresults.count(filemd5) > 0:
-        #    continue
-        temp = dict()
-        name, gender, avatar, userid, video, width, height = \
-        r.hmget(filemd5, "name", "gender", "avatar", "userid", "video", "width", "height")
-        temp['name'] = name
-        temp['gender'] = gender
-        temp['avatar'] = avatar
-        temp['userid'] = userid
-        temp['video'] = video
-        temp['width'] = width
-        temp['height'] = height
-        temp['distance'] = distances[which]
-        temp['filemd5'] = filemd5
-        results.append(temp)
-        myresults.append(filemd5)
-        which += 1 
-
-    videos = r.georadius("video_g_i", longtitude, latitude, 10000, unit="m", withdist=True, count=100, sort="ASC")
-    for video in videos:
-        filemd5, far = video[0], video[1]
-        if myresults.count(filemd5) > 0:
-            continue
-        temp = dict()
-        name, gender, avatar, userid, video, width, height = \
-        r.hmget(filemd5, "name", "gender", "avatar", "userid", "video", "width", "height")
-        temp['name'] = name
-        temp['gender'] = gender
-        temp['avatar'] = avatar
-        temp['userid'] = userid
-        temp['video'] = video
-        temp['width'] = width
-        temp['height'] = height
-        temp['distance'] = far
-        temp['filemd5'] = filemd5
-        results.append(temp)
-        #myresults.append(filemd5)
-
-    return results
-
-def APP(longtitude, latitude, radius):
-    fuwas = r.georadius("fuwa_c", longtitude, latitude, int(radius), unit="m", withdist=True)
-    near = [x for x in fuwas if x[1] <= HOWFAR]
-    near = sorted(near, key=lambda x: int(x[0][7:]), reverse=True)
-    near = near[:100]
-    total = 1
-    nearfuwas = list()
-    for fuwa in near:
-        fuwaid = fuwa[0]
-        geohash = r.geopos("fuwa_c", fuwaid)
-        result = dict()
-        result['id'] = total
-        total += 1
-        result['longitude'] = geohash[0][0]
-        result['latitude'] = geohash[0][1]
-        result['width'] = 33
-        result['height'] = 50
-        result['iconPath'] = "/images/fuwa_local.png"
-        nearfuwas.append(result)
-
-    return {"far":[], "near":nearfuwas}
-
-#print QueryMyApply("100000076")
-#print QueryMy("100000320")
-#print CaptureFuwa("http://afa/daf/pic.jpg", "john", "fuwa_1")
-#print QueryStrFuwaNew(113.3, 23.09 , 9000, "0")

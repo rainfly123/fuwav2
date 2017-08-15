@@ -40,6 +40,25 @@ class QueryHandler(tornado.web.RequestHandler):
         resp['data'] = redi.Query(longitude, latitude)
         self.write(json.dumps(resp))
 
+class queryvideoHandler(tornado.web.RequestHandler):
+    def get(self):
+        resp = dict() 
+
+        geohash = self.get_argument("geohash", strip=True)
+        geo = geohash.split('-')
+        if len(geo) != 2 :
+            resp['code'] =  1
+            resp['message'] = "Parameter Error" 
+            self.write(json.dumps(resp))
+            return
+        
+        longitude, latitude = geo[0], geo[1] 
+        resp['code'] =  0
+        resp['message'] = "OK" 
+        resp['data'] = redi.QueryVideo(longitude, latitude)
+        self.write(json.dumps(resp))
+
+
 
 def getFileName():
     source = list(string.lowercase) 
@@ -93,39 +112,6 @@ class HideHandler(tornado.web.RequestHandler):
         self.myget(video, uuids)
 
 
-class QuerymyapplyHandler(tornado.web.RequestHandler):
-    def get(self):
-        resp = dict()
-        user = self.get_argument("user", strip=True)
-        if len(user) < 2 :
-            resp['code'] =  1
-            resp['message'] = "Parameter Error" 
-            self.write(json.dumps(resp))
-            return
-        
-        data = redi.QueryMyApply(user)
-        resp['code'] =  0
-        resp['message'] = "Ok" 
-        resp['data'] = data 
-        self.write(json.dumps(resp))
-
-
-class QuerymyfortopHandler(tornado.web.RequestHandler):
-    def get(self):
-        resp = dict()
-        user = self.get_argument("user", strip=True)
-        if len(user) < 2 :
-            resp['code'] =  1
-            resp['message'] = "Parameter Error" 
-            self.write(json.dumps(resp))
-            return
-        
-        data = redi.QueryMyfortop(user)
-        resp['code'] =  0
-        resp['message'] = "Ok" 
-        resp['data'] = data 
-        self.write(json.dumps(resp))
-
 class huodongHandler(tornado.web.RequestHandler):
     def get(self):
         resp = dict()
@@ -141,24 +127,6 @@ class huodongHandler(tornado.web.RequestHandler):
         resp['data'] =  data
         self.write(json.dumps(resp))
 
-
-class queryvideoHandler(tornado.web.RequestHandler):
-    def get(self):
-        resp = dict() 
-
-        geohash = self.get_argument("geohash", strip=True)
-        geo = geohash.split('-')
-        if len(geo) != 2 :
-            resp['code'] =  1
-            resp['message'] = "Parameter Error" 
-            self.write(json.dumps(resp))
-            return
-        
-        longitude, latitude = geo[0], geo[1] 
-        resp['code'] =  0
-        resp['message'] = "OK" 
-        resp['data'] = redi.QueryVideo(longitude, latitude)
-        self.write(json.dumps(resp))
 
 
 class QuerymyHandler(tornado.web.RequestHandler):
@@ -229,14 +197,28 @@ class OpenHandler(tornado.web.RequestHandler):
         resp['data'] = data 
         self.write(json.dumps(resp))
 
-
+class QuerymyHandler(tornado.web.RequestHandler):
+    def get(self):
+        resp = dict()
+        user = self.get_argument("userid", strip=True)
+        if len(user) < 2 :
+            resp['code'] =  1
+            resp['message'] = "Parameter Error" 
+            self.write(json.dumps(resp))
+            return
+        
+        data = redi.QueryMy(user)
+        resp['code'] =  0
+        resp['message'] = "Ok" 
+        resp['data'] = data 
+        self.write(json.dumps(resp))
 
 application = tornado.web.Application([
     (r"/query", QueryHandler),
+    (r"/queryvideo", queryvideoHandler),
     (r"/hide", HideHandler),
     (r"/huodong", huodongHandler),
-    (r"/queryvideo", queryvideoHandler),
-    (r"/querymy", huodongHandler),
+    (r"/querymy", QuerymyHandler),
     (r"/openmoney", OpenHandler),
     #(r"/hit", HitHandler),
 ])
