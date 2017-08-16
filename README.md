@@ -1,7 +1,7 @@
 # 藏视频，视频里面关联很多红包， 服务器根据位置下发视频，或视频地图，
 # 用户看完视频就可以领取红包 ,(没有线索图片) , 藏视频 可以地图任意选点
 
-# 1 查询周围的宝贝
+# 0 查询周围的地图视频
 http://fuwav2.hmg66.com/api/query?geohash=102.2301-33.2827
 经度－纬度
 
@@ -16,7 +16,33 @@ hider: "100000354",
 geo: "113.300937-23.085474",
 name: "CHU",
 gender: "女",
-detail: "测试",
+uuid: "adfadfawwfadd"
+avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
+signature: "",
+location: "广东 广州市"
+money: "1" 有红包
+}
+{
+}
+]
+}
+```
+
+# 1 查询周围的视频
+http://fuwav2.hmg66.com/api/queryvideo?geohash=102.2301-33.2827
+经度－纬度
+
+```
+message: "OK",
+code: 0,
+data: {
+[{
+pos: "珠江国际纺织城",
+video: "http://x.xx.cx/uuid.mp4",
+hider: "100000354",
+geo: "113.300937-23.085474",
+name: "CHU",
+gender: "女",
 uuid: "adfadfawwfadd"
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
@@ -30,7 +56,6 @@ hider: "100000354",
 geo: "113.300937-23.085474",
 name: "CHU",
 gender: "女",
-detail: "测试",
 uuid: "bjfadkeab", 
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
@@ -173,7 +198,6 @@ geohash 是当前经纬度
     ]
 }
 ```
-
 #9 查询自己藏得宝贝
 
 http://fuwav2.hmg66.com/api/querymy?userid=
