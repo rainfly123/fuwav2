@@ -194,4 +194,6 @@ def QueryVideo(classid, longtitude, latitude):
         #myresults.append(filemd5)
 
     return results
-
+#open red evelop
+def Openredevp(userid, uuid):
+    pass

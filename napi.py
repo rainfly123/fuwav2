@@ -191,23 +191,7 @@ class OpenHandler(tornado.web.RequestHandler):
             self.write(json.dumps(resp))
             return
         
-        data = redi.QueryMy(user)
-        resp['code'] =  0
-        resp['message'] = "Ok" 
-        resp['data'] = data 
-        self.write(json.dumps(resp))
-
-class QuerymyHandler(tornado.web.RequestHandler):
-    def get(self):
-        resp = dict()
-        user = self.get_argument("userid", strip=True)
-        if len(user) < 2 :
-            resp['code'] =  1
-            resp['message'] = "Parameter Error" 
-            self.write(json.dumps(resp))
-            return
-        
-        data = redi.QueryMy(user)
+        data = redi.Openredevp(user)
         resp['code'] =  0
         resp['message'] = "Ok" 
         resp['data'] = data 
