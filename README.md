@@ -1,7 +1,7 @@
 # 藏视频，视频里面关联很多红包， 服务器根据位置下发视频，或视频地图，
 # 用户看完视频就可以领取红包 ,(没有线索图片) , 藏视频 可以地图任意选点
 
-# 0 查询周围的地图视频
+# 1 查询周围的地图视频
 http://fuwav2.hmg66.com/api/query?geohash=102.2301-33.2827
 经度－纬度
 
@@ -19,7 +19,7 @@ money: "1" 有红包 // "2" 有卡券
 ]
 ```
 
-# 1 查询周围的视频
+# 2 查询周围的视频
 http://fuwav2.hmg66.com/api/queryvideo?geohash=102.2301-33.2827
 经度－纬度
 
@@ -57,7 +57,7 @@ money: "0" 无红包 无卡券
 ]
 }
 ```
-# 1.1 打开红包 
+# 3 打开红包 
 
 http://fuwav2.hmg66.com/api/openmoney?uuid=xxx
 ```
@@ -70,7 +70,7 @@ msg :"红包已存入你个人余额"/"红包已被领完了"
 ```
 
 
-# 2 藏视频 
+# 4 藏视频 
 
 POST http://fuwav2.hmg66.com/api/hide?owner=xx&detail=店内活动&pos=xx&geohash=102.2-33.22&redevpnum=?&redevptotal=?
 owner福娃所有者
@@ -80,17 +80,15 @@ redevpnum 红包数量
 redevptotal 红包总金额
 视频采用POST name=video
 
-```
 图片为file 视频为video
     <form action='upload' enctype="multipart/form-data" method='post'>
     <input type='file' name='file'/><br/>
     <input type='file' name='video'/><br/>
     <input type='submit' value='submit'/>
     </form>
-```
 
 
-# 3 查询活动介绍 ，以及视频详细信息
+#5 查询活动介绍 ，以及视频详细信息
 http://fuwav2.hmg66.com/api/huodong?uuid=adfeadfdbbdfw
 ```
 uuid为视频uuid
@@ -114,7 +112,7 @@ money: "1" 有红包 // "2" 有卡券
 ```
 
 
-# 4 查询我的消息　(没有更改)
+# 6 查询我的消息　(没有更改)
 http://fuwav2.hmg66.com/msg/myinfo?userid=
 ```
 {
@@ -144,7 +142,7 @@ http://fuwav2.hmg66.com/msg/myinfo?userid=
 }
 ```
 
-# 5 提现申请 (没有更改)
+# 7 提现申请 (没有更改)
 http://fuwa.hmg66.com/msg/money?userid=xx&amount=xx&alipay=xx&name=小啊&sign=xx
 http://fuwav2.hmg66.com/msg/money?userid=xx&amount=xx&alipay=xx&name=小啊&sign=xx
 userid 用户ID
@@ -153,55 +151,23 @@ alipay 支付宝帐号
 sign 签名
 md5(/money?userid=100000076&alipay=22233322x&amount=13&name=%E5%B0%8F%E5%95%8A&platform=boss66)
 
-# 6 查询可用余额 (没有更改) 
+# 8 查询可用余额 (没有更改) 
 http://fuwav2.hmg66.com/msg/querymoney?userid=100000078
 http://fuwa.hmg66.com/msg/querymoney?userid=100000078
 二个路径应该都可以
 userid 用户ID
 
 
-# 7 增加播放次数 (暂时不做）
+# 9 增加播放次数 (暂时不做）
 http://fuwa.hmg66.com/api/hit?uuid=adfefadfcafda&time=1496313547&sign=
 uuid 是视频文件ＭＤ５　校验值。
 如果是萌友视频class设置为i
 time 是从1970年１月１日凌晨到目前的秒数
 sign 是签名
 
+#10 查询自己抢的卡券 (暂时未实现）
 
-# 8 查询视频入口则为http://fuwav2.hmg66.com/api/queryvideo?geohash=102.2301-33.2827
-geohash 是当前经纬度
-
-```
-{
-   code : 0
-   message: "OK",
-   data:[
-   {
-    name: "CHU",
-    userid : "10000023",
-    gender: "女",
-    avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-    video: "http://wsim.66boss.com/avatar/20170.mp4"
-    width:1024
-    height:768
-    uuid:"3ea31ba3efg1331a398"
-   },
-   {,
-    name: "CHU",
-    userid : "10000023",
-    gender: "女",
-    avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-    video: "http://wsim.66boss.com/avatar/20170.mp4"
-    width:1024
-    height:768
-    uuid:"3ea31ba3efg1331a398"
-    distance: 1000 距离你距离
-    },
-
-    ]
-}
-```
-#9 查询自己藏得宝贝
+#11 查询自己藏得宝贝
 
 http://fuwav2.hmg66.com/api/querymy?userid=
 
@@ -242,7 +208,6 @@ location: "广东 广州市"
 }
 
 ```
-
 
 # 关于签名 
 只对抓福娃ＵＲＬ　签名，其余不要求
