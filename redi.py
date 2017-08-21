@@ -14,53 +14,27 @@ STORE_PATH="/www/html/fuwa/"
 pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=1, password="aaa11bbb22")  
 r = redis.Redis(connection_pool=pool)  
 
-HOWFAR = 300
 radius = 3000
 def Query(longtitude, latitude):
 
-    videos = r.georadius("video_g", longtitude, latitude, radius, unit="m", withdist=True)
+    videos = r.georadius("video_g", longtitude, latitude, radius, unit="m", withdist=True , count=100, sort="ASC")
 
-    nearfuwas = list()
-    for fuwa in near:
-        fuwaid, distance = fuwa[0], fuwa[1]
-        detail, pos, pic, idd = r.hmget(fuwaid, "detail", "pos", "pic", "id")
-        geohash = r.geopos("fuwa_c", fuwaid)
+    videosinfo = list()
+    for video in videos:
+        md5, distance = video[0], video[1]
+        geohash = r.geopos("video_g", md5)
         geo = "%f-%f"%(geohash[0][0], geohash[0][1])
 
-        name, avatar, gender, signature, location, video, owner = r.hmget(fuwaid, "name", "avatar", "gender", "signature", "location", "video", "owner")
+        pos, name, avatar, gender, signature, location, video, hider, money = r.hmget(md5,\
+        "pos", "name", "avatar", "gender", "signature", "location", "video", "hider", "money")
 
-        result  = {"gid":fuwaid, "distance":distance, "pos":pos, "id":idd, "geo":geo, "pic":pic, "detail":detail,\
-                  "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location,\
-                  "video":video, "hider": owner}
-        nearfuwas.append(result)
+        result  = {"distance":distance, "pos":pos, "geo":geo, "detail":detail,\
+                  "name":name, "avatar":avatar, "gender":gender, "signature":signature,\
+                   "location":location, "video":video, "hider": hider, "money":money}
 
-    farfuwas = list()
-    for fuwa in far:
-        if len(farfuwas) >= 300:
-            break
-        fuwaid, distance = fuwa[0], fuwa[1]
-        detail, pos, pic, idd = r.hmget(fuwaid, "detail", "pos", "pic", "id")
-        geohash = r.geopos("fuwa_c", fuwaid)
-        geo = "%f-%f"%(geohash[0][0], geohash[0][1])
+        videosinfo.append(result)
 
-        name, avatar, gender, signature, location, video, owner = r.hmget(fuwaid, "name", "avatar", "gender", "signature", "location", "video", "owner")
-
-        result  = {"distance":distance, "pos":pos, "geo":geo, "pic":pic, "detail":detail,\
-                  "name":name, "avatar":avatar, "gender":gender, "signature":signature, "location":location,\
-                  "video":video, "hider": owner, "number":1}
-        total = len(farfuwas)
-        if total == 0:
-            farfuwas.append(result)
-            continue
-        for x in xrange(total):
-            if farfuwas[x]['geo'] == geo:
-                farfuwas[x]['number'] += 1
-                x = total
-                break
-        if x != total:
-            farfuwas.append(result)
-
-    return {"far":farfuwas, "near":nearfuwas}
+    return  videosinfo
 
 BASE = "https://api.66boss.com/ucenter/userinfo/info?user_id="
 
