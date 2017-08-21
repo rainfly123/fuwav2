@@ -25,12 +25,8 @@ def Query(longtitude, latitude):
         geohash = r.geopos("video_g", md5)
         geo = "%f-%f"%(geohash[0][0], geohash[0][1])
 
-        pos, name, avatar, gender, signature, location, video, hider, money = r.hmget(md5,\
-        "pos", "name", "avatar", "gender", "signature", "location", "video", "hider", "money")
-
-        result  = {"distance":distance, "pos":pos, "geo":geo, "detail":detail,\
-                  "name":name, "avatar":avatar, "gender":gender, "signature":signature,\
-                   "location":location, "video":video, "hider": hider, "money":money}
+        money = r.hget(md5,"money")
+        result  = {"uuid":md5, "distance":distance, "geo":geo, "money":money}
 
         videosinfo.append(result)
 
@@ -115,59 +111,26 @@ def Hit(filemd5, classid):
         r.zincrby("video_" + classid, filemd5, amount=1)
     return True
 
-def QueryVideo(classid, longtitude, latitude):
-    location = (latitude, longtitude)
-    filemd5s = r.zrevrange("video_" + classid, 0, 4)
-    #filemd5s = [x for x in filemd5s if x != None]
-    positions = r.geopos("video_g_" + classid, *filemd5s)
-    distances = list()
-    for pos in positions:
-        dis = getdis.getdistance(location, (pos[1], pos[0]))
-        distances.append(dis)
-    results = list()
-    myresults = list()
-    which = 0
-    for filemd5 in filemd5s:
-        #this moment we can't see repeated
-        #if myresults.count(filemd5) > 0:
-        #    continue
-        temp = dict()
-        name, gender, avatar, userid, video, width, height = \
-        r.hmget(filemd5, "name", "gender", "avatar", "userid", "video", "width", "height")
-        temp['name'] = name
-        temp['gender'] = gender
-        temp['avatar'] = avatar
-        temp['userid'] = userid
-        temp['video'] = video
-        temp['width'] = width
-        temp['height'] = height
-        temp['distance'] = distances[which]
-        temp['filemd5'] = filemd5
-        results.append(temp)
-        myresults.append(filemd5)
-        which += 1 
+def QueryVideo(longtitude, latitude):
 
-    videos = r.georadius("video_g_"+classid, longtitude, latitude, 10000, unit="m", withdist=True, count=100, sort="ASC")
+    videos = r.georadius("video_g", longtitude, latitude, radius, unit="m", withdist=True , count=100, sort="ASC")
+
+    videosinfo = list()
     for video in videos:
-        filemd5, far = video[0], video[1]
-        if myresults.count(filemd5) > 0:
-            continue
-        temp = dict()
-        name, gender, avatar, userid, video, width, height = \
-        r.hmget(filemd5, "name", "gender", "avatar", "userid", "video", "width", "height")
-        temp['name'] = name
-        temp['gender'] = gender
-        temp['avatar'] = avatar
-        temp['userid'] = userid
-        temp['video'] = video
-        temp['width'] = width
-        temp['height'] = height
-        temp['distance'] = far
-        temp['filemd5'] = filemd5
-        results.append(temp)
-        #myresults.append(filemd5)
+        md5, distance = video[0], video[1]
+        geohash = r.geopos("video_g", md5)
+        geo = "%f-%f"%(geohash[0][0], geohash[0][1])
 
-    return results
+        pos, name, avatar, gender, signature, location, video, hider, money, width, height = r.hmget(md5, "pos", "name", "avatar", "gender", "signature", "location", "video", "hider", "money", "width", "height")
+
+        result  = {"uuid":md5, "distance":distance, "pos":pos, "geo":geo, "detail":detail,\
+                  "name":name, "avatar":avatar, "gender":gender, "signature":signature,\
+                   "location":location, "video":video, "hider": hider, "money":money, "width":width, "height":height}
+
+        videosinfo.append(result)
+
+    return  videosinfo
+
 #open red evelop
 def Openredevp(userid, uuid):
     pass

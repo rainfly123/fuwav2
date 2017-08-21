@@ -8,24 +8,15 @@ http://fuwav2.hmg66.com/api/query?geohash=102.2301-33.2827
 ```
 message: "OK",
 code: 0,
-data: {
+data: 
 [{
-pos: "珠江国际纺织城",
-video: "http://x.xx.cx/uuid.mp4",
-hider: "100000354",
 geo: "113.300937-23.085474",
-name: "CHU",
-gender: "女",
-uuid: "adfadfawwfadd"
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
+distance : 123999
+uuid : 123adf2adfbm320adfadf
 money: "1" 有红包 // "2" 有卡券
 }
-{
-}
+,
 ]
-}
 ```
 
 # 1 查询周围的视频
@@ -99,14 +90,26 @@ redevptotal 红包总金额
 ```
 
 
-# 3 福娃活动介绍
+# 3 查询活动介绍 ，以及视频详细信息
 http://fuwav2.hmg66.com/api/huodong?uuid=adfeadfdbbdfw
 ```
 uuid为视频uuid
 {
 message: "Ok",
 code: 0,
-data: "抢到本次福娃用户，本店消费全场八折"
+data: {
+pos: "珠江国际纺织城",
+video: "http://x.xx.cx/uuid.mp4",
+hider: "100000354",
+geo: "113.300937-23.085474",
+name: "CHU",
+gender: "女",
+uuid: "adfadfawwfadd"
+avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
+signature: "",
+location: "广东 广州市"
+money: "1" 有红包 // "2" 有卡券
+}
 }
 ```
 
