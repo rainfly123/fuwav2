@@ -20,7 +20,7 @@ uuid: "adfadfawwfadd"
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
-money: "1" 有红包
+money: "1" 有红包 // "2" 有卡券
 }
 {
 }
@@ -47,7 +47,7 @@ uuid: "adfadfawwfadd"
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
-money: "1" 有红包
+money: "1" 有红包 // "2" 有卡券
 },
 {
 pos: "珠江国际纺织城",
@@ -60,7 +60,7 @@ uuid: "bjfadkeab",
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
-money: "0" 无红包
+money: "0" 无红包 无卡券
 },
 
 ]
