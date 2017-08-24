@@ -256,12 +256,13 @@ application = tornado.web.Application([
     (r"/querymysell", QuerymysellHandler),
     (r"/cancelsell", CancelsellHandler),
     (r"/notice", NoticeHandler),
-    (r"/topup", topupHandler),
-    (r"/submoney", submoneyHandler),
+    (r"/topup", topupHandler), #充值
+    (r"/openredevp", topupHandler), #抢红包
+    #(r"/submoney", submoneyHandler),
     (r"/sell", sellHandler),
     (r"/myinfo", msgHandler),
     (r"/apply", applyHandler),
-    (r"/money", moneyHandler),
+    (r"/money", moneyHandler), #提现
     (r"/querymoney", querymoneyHandler),
     (r"/donatemsg", donateHandler),
 ])
