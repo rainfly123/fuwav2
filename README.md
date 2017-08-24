@@ -120,7 +120,7 @@ width:720
 height:800
 }
 }
-`
+```
 
 # 6 查询我的消息　(没有更改)
 http://fuwav2.hmg66.com/msg/myinfo?userid=
