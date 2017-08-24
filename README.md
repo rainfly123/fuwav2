@@ -106,7 +106,21 @@ detail: "吃好喝好或或"
 }
 }
 ```
-
+# 5-1 查询视频信息（从地图进入）
+http://fuwav2.hmg66.com/api/info?uuid=adfeadfdbbdfw
+```
+uuid为视频uuid
+{
+message: "Ok",
+code: 0,
+data: {
+video: "http://x.xx.cx/uuid.mp4",
+money: "1" 有红包 // "2" 有卡券
+width:720
+height:800
+}
+}
+`
 
 # 6 查询我的消息　(没有更改)
 http://fuwav2.hmg66.com/msg/myinfo?userid=

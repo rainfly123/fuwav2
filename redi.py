@@ -106,6 +106,11 @@ def Huodong(gid):
         detail = ""
     return {"hider":hider, "gender":gender, "avatar":avatar, "name":name, "detail":detail}
 
+def Info(gid):
+    video, money, width, height = r.hmget(gid, "video", "money", "width", "height")
+    return {"video":video, "money":money, "width":width, "height": height }
+
+
 def Hit(filemd5, classid):
     score = r.zscore("video_" + classid, filemd5)
     if score != None:

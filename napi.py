@@ -127,7 +127,20 @@ class huodongHandler(tornado.web.RequestHandler):
         resp['data'] =  data
         self.write(json.dumps(resp))
 
-
+class infoHandler(tornado.web.RequestHandler):
+    def get(self):
+        resp = dict()
+        gid = self.get_argument("uuid", strip=True)
+        if len(gid) < 2:
+            resp['code'] =  1
+            resp['message'] = "Parameter Error" 
+            self.write(json.dumps(resp))
+            return
+        data = redi.Info(gid)
+        resp['code'] = 0 
+        resp['message'] = "Ok" 
+        resp['data'] =  data
+        self.write(json.dumps(resp))
 
 class QuerymyHandler(tornado.web.RequestHandler):
     def get(self):
@@ -202,6 +215,7 @@ application = tornado.web.Application([
     (r"/queryvideo", queryvideoHandler),
     (r"/hide", HideHandler),
     (r"/huodong", huodongHandler),
+    (r"/info", infoHandler),
     (r"/querymy", QuerymyHandler),
     (r"/openmoney", OpenHandler),
     #(r"/hit", HitHandler),
