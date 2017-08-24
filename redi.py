@@ -96,6 +96,7 @@ def QueryMy(user):
         video, pos = r.hmget(uuid, "video", "pos")
         out["video"] = video
         out['pos'] = pos
+        out['uuid'] = uuid
         outs.append(out)
     return outs
 
