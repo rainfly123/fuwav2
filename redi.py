@@ -100,10 +100,11 @@ def QueryMy(user):
     return outs
 
 def Huodong(gid):
-    detail = r.hget(gid, "detail")
+    hider, gender, avatar, detail, name = r.hmget(gid, "hider", "gender", "avatar",\
+                                                  "detail", "name")
     if detail == None:
         detail = ""
-    return detail
+    return {"hider":hider, "gender":gender, "avatar":avatar, "name":name, "detail":detail}
 
 def Hit(filemd5, classid):
     score = r.zscore("video_" + classid, filemd5)
@@ -118,17 +119,14 @@ def QueryVideo(longtitude, latitude):
     videosinfo = list()
     for video in videos:
         md5, distance = video[0], video[1]
-        geohash = r.geopos("video_g", md5)
-        geo = "%f-%f"%(geohash[0][0], geohash[0][1])
 
-        pos, name, avatar, gender, signature, location, video, hider, money, width, height,\
-        detail  = r.hmget(md5, "pos", "name", "avatar", "gender", "signature", "location",\
-                          "video", "hider", "money", "width", "height", "detail")
+        pos, name, avatar, gender, signature, location, video, hider, money, width, height  =\
+        r.hmget(md5, "pos", "name", "avatar", "gender", "signature", "location",\
+               "video", "hider", "money", "width", "height")
 
-        result = {"uuid":md5, "distance":distance, "pos":pos, "geo":geo, "detail":detail,\
-                  "name":name, "avatar":avatar, "gender":gender, "signature":signature,\
-                  "location":location, "video":video, "hider": hider, "money":money, "width":\
-                  width, "height":height}
+        result = {"uuid":md5, "distance":distance, "pos":pos, "name":name, "avatar":avatar, \
+                  "gender":gender, "signature":signature, "location":location, "video":video,\
+                  "hider": hider, "money":money, "width":width, "height":height}
 
         videosinfo.append(result)
 

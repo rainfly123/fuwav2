@@ -31,7 +31,6 @@ data: {
 pos: "珠江国际纺织城",
 video: "http://x.xx.cx/uuid.mp4",
 hider: "100000354",
-geo: "113.300937-23.085474",
 name: "CHU",
 gender: "女",
 uuid: "adfadfawwfadd"
@@ -39,12 +38,13 @@ avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
 money: "1" 有红包 // "2" 有卡券
+width:720
+height:800
 },
 {
 pos: "珠江国际纺织城",
 video: "http://x.xx.cx/uuid.mp4",
 hider: "100000354",
-geo: "113.300937-23.085474",
 name: "CHU",
 gender: "女",
 uuid: "bjfadkeab", 
@@ -52,6 +52,8 @@ avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
 signature: "",
 location: "广东 广州市"
 money: "0" 无红包 无卡券
+width:720
+height:800
 },
 
 ]
@@ -88,7 +90,7 @@ redevptotal 红包总金额
     </form>
 
 
-#5 查询活动介绍 ，以及视频详细信息
+# 5 查询活动介绍 
 http://fuwav2.hmg66.com/api/huodong?uuid=adfeadfdbbdfw
 ```
 uuid为视频uuid
@@ -96,17 +98,11 @@ uuid为视频uuid
 message: "Ok",
 code: 0,
 data: {
-pos: "珠江国际纺织城",
-video: "http://x.xx.cx/uuid.mp4",
 hider: "100000354",
-geo: "113.300937-23.085474",
 name: "CHU",
 gender: "女",
-uuid: "adfadfawwfadd"
 avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-money: "1" 有红包 // "2" 有卡券
+detail: "吃好喝好或或"
 }
 }
 ```
