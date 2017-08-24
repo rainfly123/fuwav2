@@ -121,11 +121,14 @@ def QueryVideo(longtitude, latitude):
         geohash = r.geopos("video_g", md5)
         geo = "%f-%f"%(geohash[0][0], geohash[0][1])
 
-        pos, name, avatar, gender, signature, location, video, hider, money, width, height = r.hmget(md5, "pos", "name", "avatar", "gender", "signature", "location", "video", "hider", "money", "width", "height")
+        pos, name, avatar, gender, signature, location, video, hider, money, width, height,\
+        detail  = r.hmget(md5, "pos", "name", "avatar", "gender", "signature", "location",\
+                          "video", "hider", "money", "width", "height", "detail")
 
-        result  = {"uuid":md5, "distance":distance, "pos":pos, "geo":geo, "detail":detail,\
+        result = {"uuid":md5, "distance":distance, "pos":pos, "geo":geo, "detail":detail,\
                   "name":name, "avatar":avatar, "gender":gender, "signature":signature,\
-                   "location":location, "video":video, "hider": hider, "money":money, "width":width, "height":height}
+                  "location":location, "video":video, "hider": hider, "money":money, "width":\
+                  width, "height":height}
 
         videosinfo.append(result)
 
