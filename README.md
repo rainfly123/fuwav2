@@ -188,32 +188,13 @@ data: {
 [{
 pos: "珠江国际纺织城",
 video: "http://x.xx.cx/uuid.mp4",
-hider: "100000354",
-geo: "113.300937-23.085474",
-name: "CHU",
-gender: "女",
-detail: "测试",
 uuid: "adfadfawwfadd"
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-location: "广东 广州市"
-money: "true"
 },
 {
 pos: "珠江国际纺织城",
 video: "http://x.xx.cx/uuid.mp4",
-hider: "100000354",
-geo: "113.300937-23.085474",
-name: "CHU",
-gender: "女",
-detail: "测试",
 uuid: "bjfadkeab", 
-avatar: "https://imgcdn.66boss.com/imagesu/avatar/20170515023034206335.jpeg",
-signature: "",
-money: "true"
-location: "广东 广州市"
 },
-
 ]
 }
 
