@@ -35,4 +35,4 @@ GBMADEEADFFDEADDMMIEADDAD
    rpush GMDADFIEPQEMADFADFDFSDAF_Coupon  1234
    1234 是优惠券卡号
 7 coupon_1234
-  优惠卡信息
+  优惠卡信息 包含藏者userid, avatar,gender,name ,detail
