@@ -258,7 +258,7 @@ application = tornado.web.Application([
     (r"/notice", NoticeHandler),
     (r"/topup", topupHandler), #充值
     (r"/openredevp", topupHandler), #抢红包
-    #(r"/submoney", submoneyHandler),
+    (r"/submoney", submoneyHandler), #发红包
     (r"/sell", sellHandler),
     (r"/myinfo", msgHandler),
     (r"/apply", applyHandler),
