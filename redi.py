@@ -66,7 +66,7 @@ def HideVideo(owner, longtitude, latitude, pos, detail, video, uuid, redevpnum, 
         redevlps = [ round(m/100.0, 2) for m in redevlp]
 
         for x in redevlps:
-            r.sadd(uuid + "_Money", x)
+            r.lpush(uuid + "_Money", x)
 
         #params = {"userid": owner, "amount":amount}
         #url = url_concat("http://127.0.0.1:7777/submoney?", params)
@@ -140,4 +140,13 @@ def QueryVideo(longtitude, latitude):
 
 #open red evelop
 def Openredevp(userid, uuid):
-    pass
+    money = r.hget(uuid, "money")
+    if money == '1':
+        howmany = r.lpop(uuid + "_Money")
+        if howmany != None:
+            pass
+    else:
+        couponid = r.lpop(uuid + "_Coupon")
+        if couponid != None:
+            r.sadd(useid+"_coupon", couponid)
+
